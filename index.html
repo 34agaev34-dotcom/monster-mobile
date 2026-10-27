@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monster Mobile — дисплеи и модульный ремонт Samsung, Huawei в Москве</title>
+<meta name="description" content="Monster Mobile — дисплейные модули Samsung и Huawei в наличии, замена при вас. Москва. Telegram @SamsungMoscow77.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#f5f7fb;--bg2:#ffffff;--card:#ffffff;--line:#e3e8f0;
+  --text:#0f1b2d;--muted:#5f6b7d;--accent:#1f6bff;--accent2:#1458d6;--soft:#eef3fc;--ok:#16a571;--danger:#e5394f;
+  --shadow:0 1px 2px rgba(15,27,45,.04),0 8px 24px -12px rgba(15,27,45,.12);
+  --r:18px;--side:250px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select{font-family:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:700;font-size:15px;border:0;cursor:pointer;transition:.2s}
+.btn-p{background:var(--accent);color:#fff;box-shadow:0 8px 24px -10px rgba(31,107,255,.7)}
+.btn-p:hover{background:#2c76ff}
+.btn-g{background:#fff;color:var(--text);border:1px solid var(--line)}
+.btn-g:hover{background:var(--soft)}
+.btn-s{padding:8px 13px;font-size:13px;border-radius:10px}
+.btn-d{background:rgba(229,57,79,.1);color:var(--danger)}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* ===== layout ===== */
+.side{position:fixed;inset:0 auto 0 0;width:var(--side);background:#fff;border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;z-index:30}
+.logo{font-weight:800;font-size:19px;letter-spacing:-.02em;padding:0 10px}
+.logo b{color:var(--accent)}
+.logo small{display:block;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0;margin-top:2px}
+.menu{display:flex;flex-direction:column;gap:4px;margin-top:34px}
+.menu a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;font-weight:600;font-size:15px;color:var(--muted);transition:.15s}
+.menu a svg{width:20px;height:20px;flex:none}
+.menu a:hover{background:var(--soft);color:var(--text)}
+.menu a.on{background:var(--accent);color:#fff;box-shadow:0 8px 20px -10px rgba(31,107,255,.8)}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.side-foot .ph{font-weight:700;font-size:15px;padding:0 10px}
+.side-foot .ph span{display:block;font-size:12px;color:var(--muted);font-weight:500}
+main{margin-left:var(--side);padding:30px 34px 60px;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto}
+
+/* ===== youtube ===== */
+.yt{border-radius:22px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:900px;position:relative;margin-bottom:28px;box-shadow:var(--shadow)}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;text-align:center;padding:20px;
+  background:radial-gradient(circle at 80% 20%,rgba(31,107,255,.55),transparent 55%),radial-gradient(circle at 10% 90%,rgba(79,155,255,.35),transparent 50%),#0f1b2d}
+.yt-ph .play{width:70px;height:70px;border-radius:50%;background:#ff0033;display:grid;place-items:center;box-shadow:0 10px 30px -6px rgba(255,0,51,.6)}
+.yt-ph .play:after{content:"";border-left:22px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px}
+.yt-ph b{font-size:20px}
+.yt-cover{position:absolute;inset:0;border:0;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-family:inherit;
+  background:radial-gradient(circle at 80% 20%,rgba(31,107,255,.55),transparent 55%),radial-gradient(circle at 10% 90%,rgba(79,155,255,.35),transparent 50%),#0f1b2d}
+.yt-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.yt-shade{position:absolute;inset:0 0 auto 0;height:90px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent)}
+.yt-cover .play{position:relative;width:68px;height:48px;border-radius:14px;background:rgba(33,33,33,.82);display:grid;place-items:center;transition:.15s}
+.yt-cover:hover .play{background:#ff0033}
+.yt-cover .play:after{content:"";border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:4px}
+
+.yt-cap{position:absolute;left:18px;top:14px;right:170px;text-align:left;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.yt-cap b{display:block;font-size:16px;font-weight:600}
+.yt-cap small{opacity:.8;font-size:13px}
+.yt-out{position:absolute;right:12px;top:12px;z-index:2;background:rgba(255,255,255,.92);color:#0f1b2d;font-size:12px;font-weight:700;padding:6px 10px;border-radius:99px}
+.yt-ph span{opacity:.7;font-size:14px}
+
+.h1{font-size:clamp(26px,3.4vw,36px);letter-spacing:-.03em;font-weight:800;line-height:1.15}
+.sub{color:var(--muted);margin:6px 0 22px}
+.page{display:none}
+.page.on{display:block}
+
+/* ===== catalog ===== */
+.tools{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.search{flex:1;min-width:220px;position:relative}
+.search input{width:100%;padding:14px 16px 14px 46px;border-radius:14px;border:1px solid var(--line);background:#fff;font:500 15px Manrope,sans-serif;color:var(--text);box-shadow:var(--shadow)}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted)}
+.sel{padding:14px 40px 14px 16px;border-radius:14px;border:1px solid var(--line);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235f6b7d' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 16px center;-webkit-appearance:none;appearance:none;font:600 15px Manrope,sans-serif;color:var(--text);cursor:pointer;box-shadow:var(--shadow)}
+.search input:focus,.sel:focus,.inp:focus{outline:none;border-color:var(--accent)}
+.found{font-size:14px;color:var(--muted);margin:-8px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.prod{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:.2s}
+.prod:hover{transform:translateY(-3px);border-color:#bcd0f5;box-shadow:0 16px 34px -14px rgba(31,107,255,.3)}
+.prod .img{aspect-ratio:1;background:var(--soft);display:grid;place-items:center;position:relative}
+.prod .img img{width:100%;height:100%;object-fit:cover}
+.prod .img svg{width:54px;height:54px;color:#b6c6e2}
+.badge{position:absolute;top:10px;left:10px;background:#fff;border-radius:99px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--accent);box-shadow:var(--shadow)}
+.badge.sale{left:auto;right:10px;background:var(--danger);color:#fff}
+.prod .body{padding:16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.prod h3{font-size:16px;font-weight:700;line-height:1.3}
+.prod .note{font-size:13px;color:var(--muted)}
+.prod .bot{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prod .pr{font-size:20px;font-weight:800}
+.prod .old{display:block;font-size:13px;color:var(--muted);text-decoration:line-through;font-weight:500}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px 20px;background:#fff;border:1px dashed var(--line);border-radius:var(--r)}
+
+/* ===== price ===== */
+.plist{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.prow:last-child{border-bottom:0}
+.prow b{font-weight:700}
+.prow small{display:block;color:var(--muted);font-size:13px}
+.prow .p{font-weight:800;font-size:17px;white-space:nowrap;color:var(--accent2)}
+.hint{margin-top:16px;padding:18px 22px;border-radius:var(--r);background:var(--soft);color:var(--accent2);font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+
+/* ===== calculator ===== */
+.calc{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:34px}
+.calc-l,.calc-r{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow)}
+.step{display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:12px}
+.step span{width:26px;height:26px;border-radius:8px;background:var(--soft);color:var(--accent);display:grid;place-items:center;font-size:13px}
+.cserv{display:flex;flex-direction:column;gap:8px}
+.copt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;cursor:pointer;transition:.15s;margin:0;color:var(--text);font-size:15px}
+.copt:hover{border-color:#bcd0f5}
+.copt.on{border-color:var(--accent);background:var(--soft)}
+.copt input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.copt .nm{flex:1;font-weight:600}
+.copt .nm small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.copt .pp{font-weight:700;white-space:nowrap;color:var(--accent2)}
+.calc-r{position:sticky;top:20px;align-self:start;display:flex;flex-direction:column;gap:12px}
+.ct{font-weight:800;font-size:18px}
+.clines{display:flex;flex-direction:column;gap:8px;min-height:40px}
+.cl{display:flex;justify-content:space-between;gap:10px;font-size:14px}
+.cl span{color:var(--muted)}
+.cl b{white-space:nowrap}
+.cl.warn span{color:var(--danger)}
+.ctotal{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--line);padding-top:14px}
+.ctotal b{font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+.calc-r small{color:var(--muted);font-size:12px;text-align:center}
+.cfound{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
+.h2s{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:14px}
+.tag-part{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:var(--soft);border-radius:6px;padding:2px 6px;margin-left:6px}
+
+/* ===== contacts ===== */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.cbox{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:flex-start}
+.cbox .ic{width:46px;height:46px;border-radius:14px;background:var(--soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.cbox .ic svg{width:22px;height:22px}
+.cbox span{font-size:13px;color:var(--muted)}
+.cbox b{display:block;font-size:17px;margin-top:2px}
+.map{margin-top:16px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);height:380px;background:var(--soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' stroke='%23d6e0f0'/%3E%3C/svg%3E");display:block;position:relative;transition:.2s}
+.map:hover{border-color:#bcd0f5;box-shadow:0 16px 34px -14px rgba(31,107,255,.3)}
+.map img{width:100%;height:100%;object-fit:cover;display:block}
+.map-cap{position:absolute;left:14px;right:14px;bottom:14px;background:#fff;border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 10px 30px -10px rgba(15,27,45,.35)}
+.map-cap b{display:block;font-size:15px}
+.map-cap span{font-size:13px;color:var(--muted)}
+.map-cap .btn{color:#fff;font-size:13px}
+.cta{margin-top:16px;background:linear-gradient(135deg,#1f6bff,#4f9bff);color:#fff;border-radius:22px;padding:34px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.cta h2{font-size:26px;letter-spacing:-.02em}
+.cta p{opacity:.85}
+.cta .btn{background:#fff;color:#0f1b2d}
+
+/* ===== admin ===== */
+#admin{display:none;min-height:100vh;padding:34px 20px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow)}
+.login{max-width:380px;margin:60px auto}
+.inp{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--text);font:500 15px Manrope,sans-serif;margin-bottom:12px}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+.err{color:var(--danger);font-size:14px;min-height:20px;margin-bottom:8px}
+.a-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.atabs{display:flex;gap:6px;margin-bottom:16px}
+.atabs button{padding:10px 18px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted)}
+.atabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.fg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.fg .w2{grid-column:span 2}.fg .full{grid-column:1/-1}
+.photo-prev{width:64px;height:64px;border-radius:12px;background:var(--soft);object-fit:cover;display:none}
+.tbl{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
+.tbl th{text-align:left;color:var(--muted);font-weight:600;padding:10px 8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl img,.tbl .noimg{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--soft);display:block}
+.acts{display:flex;gap:6px;justify-content:flex-end}
+.off{opacity:.45}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#0f1b2d;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:99}
+.toast.show{opacity:1}
+
+/* ===== mobile ===== */
+@media(max-width:860px){
+  .side{inset:auto 0 0 0;width:auto;height:66px;flex-direction:row;padding:6px 8px;border-right:0;border-top:1px solid var(--line)}
+  .side .logo,.side-foot{display:none}
+  .menu{flex-direction:row;margin:0;width:100%;gap:4px}
+  .menu a{flex:1;flex-direction:column;gap:2px;padding:7px 4px;font-size:11px;justify-content:center}
+  main{margin-left:0;padding:16px 16px 90px}
+  .mob-head{display:flex!important}
+  .yt{border-radius:16px;margin-bottom:20px}
+  .yt-cap{display:none}
+  .tools .sel{flex:1}
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .prod .body{padding:12px}.prod h3{font-size:14px}.prod .pr{font-size:17px}
+  .prod .bot{flex-direction:column;align-items:stretch}
+  .cgrid{grid-template-columns:1fr}
+  .calc{grid-template-columns:1fr}
+  .calc-l,.calc-r{padding:18px}
+  .calc-r{position:static}
+  .fg{grid-template-columns:1fr 1fr}
+  .tbl .hm{display:none}
+  .toast{bottom:84px}
+}
+.mob-head{display:none;justify-content:space-between;align-items:center;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<div id="site">
+  <aside class="side">
+    <a href="#catalog" class="logo">Monster <b>Mobile</b><small>Дисплеи и модульный ремонт</small></a>
+    <nav class="menu">
+      <a href="#catalog" data-p="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>Каталог</a>
+      <a href="#price" data-p="price"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.8-3.8a6 6 0 01-7.9 7.9l-6.9 6.9a2.1 2.1 0 01-3-3l6.9-6.9a6 6 0 017.9-7.9z"/></svg>Цены на ремонт</a>
+      <a href="#contact" data-p="contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Контакты</a>
+    </nav>
+    <div class="side-foot">
+      <div class="ph"><a href="tel:+79224850993">+7 922 485-09-93</a><br><a href="tel:+79324704173">+7 932 470-41-73</a><span>м. Окружная · по записи</span></div>
+      <a class="btn btn-p" href="https://t.me/SamsungMoscow77" target="_blank">Написать в Telegram</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrap">
+      <div class="mob-head">
+        <a href="#catalog" class="logo" style="padding:0">Monster <b>Mobile</b></a>
+        <a class="btn btn-p btn-s" href="https://t.me/SamsungMoscow77" target="_blank">Telegram</a>
+      </div>
+
+      <!-- КАТАЛОГ -->
+      <section class="page" id="p-catalog">
+        <div class="yt" id="yt"></div>
+        <h1 class="h1">Дисплейные модули и запчасти</h1>
+        <p class="sub">Всё в наличии в Москве. Купить отдельно или установить при вас.</p>
+        <div class="tools">
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="q" placeholder="Поиск: S23, A54, P30…">
+          </label>
+          <select class="sel" id="filter">
+            <option value="all">Все товары</option>
+            <optgroup label="Сортировка">
+              <option value="asc">Сначала дешевле</option>
+              <option value="desc">Сначала дороже</option>
+            </optgroup>
+            <optgroup label="Бренд">
+              <option value="b:Samsung">Samsung</option>
+              <option value="b:Huawei">Huawei</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="found" id="found"></div>
+        <div class="grid" id="grid"><div class="empty">Загружаем каталог…</div></div>
+      </section>
+
+      <!-- ПРАЙС -->
+      <section class="page" id="p-price">
+        <h1 class="h1">Цены на ремонт</h1>
+        <p class="sub">Выберите модель и что нужно сделать, и калькулятор сразу посчитает стоимость.</p>
+
+        <div class="calc">
+          <div class="calc-l">
+            <div class="step"><span>1</span>Модель телефона</div>
+            <label class="search" style="display:block;margin-bottom:10px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input id="cSearch" placeholder="Найти модель: A54, S23, P30…" autocomplete="off">
+            </label>
+            <select class="sel" id="cModel" style="width:100%"></select>
+            <div class="cfound" id="cFound"></div>
+            <div class="step" style="margin-top:22px"><span>2</span>Что нужно сделать</div>
+            <div class="cserv" id="cServ"></div>
+          </div>
+          <div class="calc-r">
+            <div class="ct">Расчёт стоимости</div>
+            <div id="cLines" class="clines"></div>
+            <div class="ctotal"><span>Итого</span><b id="cTotal">0 ₽</b></div>
+            <a class="btn btn-p" id="cBtn" href="https://t.me/SamsungMoscow77" target="_blank" style="width:100%">Записаться на ремонт</a>
+            <small>Точная цена фиксируется после бесплатной диагностики.</small>
+          </div>
+        </div>
+
+        <h2 class="h2s">Все цены на работы</h2>
+        <div class="plist" id="plist"></div>
+        <div class="hint">Не нашли нужную услугу? Напишите модель, посчитаем за минуту.
+          <a class="btn btn-p btn-s" href="https://t.me/SamsungMoscow77" target="_blank">Узнать цену</a></div>
+      </section>
+
+      <!-- КОНТАКТЫ -->
+      <section class="page" id="p-contact">
+        <h1 class="h1">Контакты</h1>
+        <p class="sub">Пишите или звоните, договоримся о времени.</p>
+        <div class="cgrid">
+          <div class="cbox"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg></div><div><span>Телефоны</span><b><a href="tel:+79224850993">+7 922 485-09-93</a></b><b><a href="tel:+79324704173">+7 932 470-41-73</a></b></div></div>
+          <a class="cbox" href="https://t.me/SamsungMoscow77" target="_blank"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div><div><span>Telegram</span><b>@SamsungMoscow77</b></div></a>
+          <div class="cbox"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span>Адрес · м. Окружная</span><b>Москва, Гостиничная ул., 5</b><span style="font-size:14px;color:var(--text)">Подъезд 2, офис 103</span></div></div>
+          <div class="cbox"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><span>График работы</span><b>По предварительному согласованию</b><span style="font-size:14px;color:var(--text)">Позвоните или напишите перед визитом</span></div></div>
+        </div>
+        <a class="map" href="https://yandex.ru/maps/213/moscow/house/gostinichnaya_ulitsa_5/Z04YcwBpT0QOQFtvfXR1cnlgZA==/" target="_blank">
+          <img src="https://static-maps.yandex.ru/1.x/?ll=37.579619,55.843530&amp;z=16&amp;l=map&amp;size=650,400&amp;pt=37.579619,55.843530,pm2blm&amp;lang=ru_RU" alt="Monster Mobile на карте: Москва, Гостиничная ул., 5" loading="lazy" onerror="this.style.display='none'">
+          <div class="map-cap"><div><b>Гостиничная ул., 5 · подъезд 2, офис 103</b><span>м. Окружная · Москва</span></div><span class="btn btn-p btn-s">Открыть в Яндекс Картах →</span></div>
+        </a>
+        <div class="cta">
+          <div><h2>Узнайте цену за 1 минуту</h2><p>Напишите модель телефона — ответим сразу.</p></div>
+          <a class="btn" href="https://t.me/SamsungMoscow77" target="_blank">Написать в Telegram</a>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div id="admin">
+  <div class="wrap">
+    <div id="loginBox" class="panel login">
+      <h2 class="h1" style="font-size:26px">Вход в админку</h2>
+      <p class="sub">Каталог и цены</p>
+      <label>Логин (телефон)</label>
+      <input class="inp" id="lPhone" inputmode="tel" placeholder="8922…">
+      <label>Пароль</label>
+      <input class="inp" id="lPass" type="password">
+      <div class="err" id="lErr"></div>
+      <button class="btn btn-p" style="width:100%" id="lBtn">Войти</button>
+      <p style="margin-top:16px;text-align:center"><a href="#catalog" style="color:var(--muted);font-size:14px">← на сайт</a></p>
+    </div>
+
+    <div id="dash" style="display:none">
+      <div class="a-top">
+        <h2 class="h1" style="font-size:28px">Админка</h2>
+        <div style="display:flex;gap:8px">
+          <a class="btn btn-g btn-s" href="#catalog" target="_blank">Открыть сайт</a>
+          <button class="btn btn-g btn-s" id="outBtn">Выйти</button>
+        </div>
+      </div>
+      <div class="atabs">
+        <button data-t="products" class="on">Каталог</button>
+        <button data-t="services">Цены на ремонт</button>
+      </div>
+
+      <!-- товары -->
+      <div id="t-products">
+        <div class="panel">
+          <h3 style="margin-bottom:14px" id="pfTitle">Добавить товар</h3>
+          <div class="fg">
+            <div><label>Бренд</label><select class="inp" id="pBrand"><option>Samsung</option><option>Huawei</option></select></div>
+            <div class="w2"><label>Название</label><input class="inp" id="pName" placeholder="Дисплей Samsung Galaxy A54 (оригинал)"></div>
+            <div><label>Цена, ₽</label><input class="inp" id="pPrice" type="number" placeholder="7900"></div>
+            <div><label>Старая цена, ₽</label><input class="inp" id="pOld" type="number" placeholder="необязательно"></div>
+            <div class="w2"><label>Описание</label><input class="inp" id="pNote" placeholder="Сервисный пакет, с рамкой"></div>
+            <div><label>Фото</label><input class="inp" id="pPhoto" type="file" accept="image/*" style="padding:9px"></div>
+            <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <img id="pPrev" class="photo-prev" alt="">
+              <label style="display:flex;gap:8px;align-items:center;margin:0;color:var(--text)"><input type="checkbox" id="pVis" checked> Показывать на сайте</label>
+              <span style="flex:1"></span>
+              <button class="btn btn-g btn-s" id="pCancel" style="display:none">Отмена</button>
+              <button class="btn btn-p btn-s" id="pSave">Добавить</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:14px;overflow-x:auto">
+          <input class="inp" id="paq" placeholder="Поиск по названию" style="margin:0">
+          <table class="tbl"><thead><tr><th></th><th>Название</th><th class="hm">Бренд</th><th>Цена</th><th></th></tr></thead><tbody id="ptb"></tbody></table>
+        </div>
+      </div>
+
+      <!-- услуги -->
+      <div id="t-services" style="display:none">
+        <div class="panel">
+          <h3 style="margin-bottom:14px" id="sfTitle">Добавить услугу</h3>
+          <div class="fg">
+            <div class="w2"><label>Услуга</label><input class="inp" id="sName" placeholder="Замена дисплейного модуля"></div>
+            <div><label>Цена, ₽</label><input class="inp" id="sPrice" type="number" placeholder="1500"></div>
+            <div><label>Порядок</label><input class="inp" id="sSort" type="number" placeholder="1"></div>
+            <div class="full"><label>Примечание</label><input class="inp" id="sNote" placeholder="40 минут, при вас"></div>
+            <div class="full" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <label style="display:flex;gap:8px;align-items:center;margin:0;color:var(--text)"><input type="checkbox" id="sFrom" checked> Цена «от»</label>
+              <label style="display:flex;gap:8px;align-items:center;margin:0;color:var(--text)"><input type="checkbox" id="sPart"> Включает цену дисплея из каталога</label>
+              <span style="flex:1"></span>
+              <button class="btn btn-g btn-s" id="sCancel" style="display:none">Отмена</button>
+              <button class="btn btn-p btn-s" id="sSave">Добавить</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:14px;overflow-x:auto">
+          <table class="tbl"><thead><tr><th>Услуга</th><th>Цена</th><th class="hm">Примечание</th><th></th></tr></thead><tbody id="stb"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==== НАСТРОЙКИ ==== */
+const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+const SUPABASE_KEY = 'YOUR-ANON-KEY';
+const LOGIN_DOMAIN = 'samsungmoscow77.ru';   // логин-телефон → 89224850993@samsungmoscow77.ru
+const YOUTUBE_URL  = 'https://youtu.be/WLaDWUtKbWM';                     // сюда ссылку на видео, напр. https://youtu.be/xxxx
+/* =================== */
+
+const configured = !SUPABASE_URL.includes('YOUR-');
+const sb = configured ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n).toLocaleString('ru-RU') + ' ₽';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast = t => { const el=$('toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); };
+const PHONE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>';
+
+/* ---- YouTube: обложка + запуск по клику ---- */
+(function(){
+  const m = YOUTUBE_URL.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
+  if(!m){ $('yt').innerHTML = `<div class="yt-ph"><div class="play"></div><b>Видео скоро здесь</b><span>Как мы меняем дисплейный модуль</span></div>`; return; }
+  const id = m[1], watch = 'https://www.youtube.com/watch?v='+id;
+  $('yt').innerHTML = `
+    <button class="yt-cover" type="button" aria-label="Смотреть видео">
+      <img class="yt-img" alt="Обложка видео" decoding="async">
+      <span class="yt-shade"></span>
+      <span class="yt-cap"><b>Monster Mobile — модульный ремонт</b></span>
+      <span class="play"></span>
+    </button>
+    <a class="yt-out" href="${watch}" target="_blank" rel="noopener">Открыть на YouTube ↗</a>`;
+  /* обложка как на YouTube: максимальное качество → запасные варианты */
+  const img = $('yt').querySelector('.yt-img');
+  const q = ['maxresdefault','sddefault','hqdefault','mqdefault']; let k = 0;
+  const next = ()=>{ if(k<q.length) img.src = `https://i.ytimg.com/vi/${id}/${q[k++]}.jpg`; else img.remove(); };
+  img.onerror = next;
+  img.onload = ()=>{ if(img.naturalWidth<=120) next(); };   // YouTube отдаёт серую заглушку 120px, если нет такого размера
+  next();
+  $('yt').querySelector('.yt-cover').onclick = ()=>{
+    $('yt').innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="Видео" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <a class="yt-out" href="${watch}" target="_blank" rel="noopener">Не грузится? Открыть на YouTube ↗</a>`;
+  };
+})();
+
+/* ---- демо-данные (пока не подключён Supabase) ---- */
+const DEMO_P = [
+  {id:1,brand:'Samsung',name:'Дисплей Samsung Galaxy S23 Ultra',price:21900,old_price:null,note:'Оригинал, сервисный пакет',photo:'',visible:true},
+  {id:2,brand:'Samsung',name:'Дисплей Samsung Galaxy S22',price:13900,old_price:15900,note:'Оригинал, с рамкой',photo:'',visible:true},
+  {id:3,brand:'Samsung',name:'Дисплей Samsung Galaxy A54',price:7900,old_price:null,note:'Оригинал',photo:'',visible:true},
+  {id:4,brand:'Samsung',name:'Дисплей Samsung Galaxy A34',price:6400,old_price:null,note:'Оригинал',photo:'',visible:true},
+  {id:5,brand:'Huawei',name:'Дисплей Huawei P30 Pro',price:9500,old_price:null,note:'Оригинал',photo:'',visible:true},
+  {id:6,brand:'Huawei',name:'Дисплей Huawei Nova 9',price:6900,old_price:7900,note:'С рамкой',photo:'',visible:true},
+];
+const DEMO_S = [
+  {id:1,name:'Замена дисплейного модуля',price:1500,from_price:false,with_part:true,note:'40 минут, при вас',sort:1},
+  {id:2,name:'Замена аккумулятора',price:1000,from_price:true,note:'30 минут',sort:2},
+  {id:3,name:'Замена задней крышки',price:800,from_price:true,note:'',sort:3},
+  {id:4,name:'Замена разъёма зарядки',price:1500,from_price:true,note:'',sort:4},
+  {id:5,name:'Диагностика',price:0,from_price:false,note:'Бесплатно при ремонте',sort:5},
+];
+
+let products=[], services=[];
+async function loadProducts(all=false){
+  if(!sb){ products = DEMO_P; return; }
+  let q = sb.from('products').select('*').order('created_at',{ascending:false});
+  if(!all) q = q.eq('visible',true);
+  const {data,error} = await q; if(error){console.error(error);toast('Ошибка загрузки');}
+  products = data||[];
+}
+async function loadServices(){
+  if(!sb){ services = DEMO_S; return; }
+  const {data,error} = await sb.from('services').select('*').order('sort').order('id');
+  if(error){console.error(error);toast('Ошибка загрузки');}
+  services = data||[];
+}
+
+/* ---- каталог ---- */
+function renderCatalog(){
+  const q = $('q').value.trim().toLowerCase(), f = $('filter').value;
+  let list = products.filter(p=>(p.brand+' '+p.name).toLowerCase().includes(q));
+  if(f.startsWith('b:')) list = list.filter(p=>p.brand===f.slice(2));
+  if(f==='asc') list = [...list].sort((a,b)=>a.price-b.price);
+  if(f==='desc') list = [...list].sort((a,b)=>b.price-a.price);
+  $('found').textContent = (q||f!=='all') ? `Найдено: ${list.length}` : '';
+  $('grid').innerHTML = list.length ? list.map(p=>`
+    <div class="prod">
+      <div class="img">${p.photo?`<img src="${esc(p.photo)}" alt="${esc(p.name)}" loading="lazy">`:PHONE_ICON}
+        <span class="badge">${esc(p.brand)}</span>${p.old_price?'<span class="badge sale">Скидка</span>':''}</div>
+      <div class="body">
+        <h3>${esc(p.name)}</h3>
+        <div class="note">${esc(p.note)}</div>
+        <div class="bot">
+          <div class="pr">${fmt(p.price)}${p.old_price?`<span class="old">${fmt(p.old_price)}</span>`:''}</div>
+          <a class="btn btn-p btn-s" target="_blank" href="https://t.me/SamsungMoscow77">Заказать</a>
+        </div>
+      </div>
+    </div>`).join('') : `<div class="empty">Ничего не нашли. <a href="https://t.me/SamsungMoscow77" target="_blank" style="color:var(--accent);font-weight:700">Напишите</a> — найдём под вашу модель.</div>`;
+}
+$('q').oninput = renderCatalog; $('filter').onchange = renderCatalog;
+
+/* ---- прайс ---- */
+const sPrice = s => s.price>0 ? (s.from_price?'от ':'')+fmt(s.price) : 'Бесплатно';
+function renderPrice(){
+  $('plist').innerHTML = services.length ? services.map(s=>`
+    <div class="prow"><div><b>${esc(s.name)}</b>${s.note?`<small>${esc(s.note)}</small>`:''}</div><div class="p">${sPrice(s)}</div></div>`).join('')
+    : '<div class="prow" style="color:var(--muted)">Прайс скоро появится</div>';
+  renderCalc();
+}
+
+/* ---- калькулятор (строится из каталога и прайса автоматически) ---- */
+const norm = t => String(t).toLowerCase().replace(/ё/g,'е').replace(/[^a-zа-я0-9+]/g,'');
+function renderModels(){
+  const prev = $('cModel').value, q = norm($('cSearch').value);
+  const list = products.filter(p=>!q || norm(p.brand+' '+p.name).includes(q))
+    .sort((x,y)=>shortName(x.name).localeCompare(shortName(y.name),'ru',{numeric:true}));
+  const brands = [...new Set(list.map(p=>p.brand))];
+  $('cModel').innerHTML = `<option value="">${list.length?'— выберите модель —':'— модель не найдена —'}</option>` + brands.map(b=>
+    `<optgroup label="${esc(b)}">${list.filter(p=>p.brand===b)
+      .map(p=>`<option value="${p.id}">${esc(shortName(p.name))}</option>`).join('')}</optgroup>`).join('');
+  if(list.some(p=>String(p.id)===prev)) $('cModel').value = prev;
+  else if(q && list.length) $('cModel').value = list[0].id;
+  $('cFound').innerHTML = !q ? '' : list.length
+    ? `Найдено моделей: ${list.length}${list.length>1?' — уточните в списке':''}`
+    : `Нет такой модели в каталоге — <a href="https://t.me/SamsungMoscow77" target="_blank" style="color:var(--accent);font-weight:700">напишите</a>, подберём`;
+}
+const shortName = n => String(n).replace(/^дисплей(ный модуль)?\s+/i,'');
+function renderCalc(){
+  renderModels();
+
+  const checked = new Set([...$('cServ').querySelectorAll('input:checked')].map(i=>i.value));
+  const first = !$('cServ').children.length;
+  $('cServ').innerHTML = services.length ? services.map((s,i)=>{
+    const on = first ? (s.with_part || (!services.some(x=>x.with_part) && i===0)) : checked.has(String(s.id));
+    return `<label class="copt ${on?'on':''}"><input type="checkbox" value="${s.id}" ${on?'checked':''}>
+      <span class="nm">${esc(s.name)}${s.with_part?'<small>+ стоимость дисплея для выбранной модели</small>':(s.note?`<small>${esc(s.note)}</small>`:'')}</span>
+      <span class="pp">${sPrice(s)}</span></label>`;
+  }).join('') : '<div style="color:var(--muted)">Прайс скоро появится</div>';
+  $('cServ').querySelectorAll('input').forEach(i=>i.onchange=()=>{ i.closest('.copt').classList.toggle('on',i.checked); calc(); });
+  calc();
+}
+function calc(){
+  const m = products.find(p=>String(p.id)===$('cModel').value);
+  const sel = services.filter(s=>$('cServ').querySelector(`input[value="${s.id}"]`)?.checked);
+  let total=0, from=false, lines=[];
+  sel.forEach(s=>{
+    if(s.with_part){
+      if(m){ lines.push(`<div class="cl"><span>Дисплей ${esc(shortName(m.name))}</span><b>${fmt(m.price)}</b></div>`); total+=m.price; }
+      else lines.push(`<div class="cl warn"><span>Выберите модель, чтобы добавить цену дисплея</span></div>`);
+    }
+    lines.push(`<div class="cl"><span>${esc(s.name)}${s.with_part?' (работа)':''}</span><b>${sPrice(s)}</b></div>`);
+    total+=s.price; if(s.from_price && s.price>0) from=true;
+  });
+  $('cLines').innerHTML = lines.join('') || '<div class="cl"><span>Отметьте нужные работы</span></div>';
+  $('cTotal').textContent = (from?'от ':'') + fmt(total);
+  const txt = `Здравствуйте! Хочу записаться на ремонт.\nМодель: ${m?shortName(m.name):'—'}\nРаботы: ${sel.map(s=>s.name).join(', ')||'—'}\nРасчёт на сайте: ${(from?'от ':'')+fmt(total)}`;
+  $('cBtn').href = 'https://t.me/SamsungMoscow77?text='+encodeURIComponent(txt);
+}
+$('cModel').onchange = calc;
+$('cSearch').oninput = ()=>{ renderModels(); calc(); };
+
+/* ---- роутинг ---- */
+let loaded = false;
+const PAGES = ['catalog','price','contact'];
+async function route(target){
+  let h = target;
+  if(!h){ try{ h = location.hash.slice(1); }catch(e){} }
+  h = h || 'catalog';
+  const isAdmin = h==='admin';
+  $('site').style.display = isAdmin?'none':'block';
+  $('admin').style.display = isAdmin?'block':'none';
+  if(isAdmin){
+    if(sb){ const {data} = await sb.auth.getSession(); if(data.session){ openDash(); return; } }
+    $('loginBox').style.display='block'; $('dash').style.display='none'; return;
+  }
+  const page = PAGES.includes(h) ? h : 'catalog';
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id==='p-'+page));
+  document.querySelectorAll('.menu a').forEach(a=>a.classList.toggle('on',a.dataset.p===page));
+  window.scrollTo(0,0);
+  if(!loaded){ loaded=true; await Promise.all([loadProducts(),loadServices()]); renderCatalog(); renderPrice(); }
+}
+/* переключение вкладок кликом — работает везде, даже в превью и без перезагрузки */
+document.addEventListener('click', e=>{
+  const a = e.target.closest('a[href^="#"]');
+  if(!a || a.target==='_blank') return;
+  const h = a.getAttribute('href').slice(1);
+  if(![...PAGES,'admin'].includes(h)) return;
+  e.preventDefault();
+  try{ history.pushState(null,'','#'+h); }catch(err){}
+  route(h);
+});
+window.addEventListener('hashchange', ()=>route());
+window.addEventListener('popstate', ()=>route());
+route();
+
+/* ================= АДМИНКА ================= */
+const phoneToEmail = p => { let d=p.replace(/\D/g,''); if(d.length===11&&d[0]==='7') d='8'+d.slice(1); return d+'@'+LOGIN_DOMAIN; };
+$('lBtn').onclick = async ()=>{
+  $('lErr').textContent='';
+  if(!sb){ $('lErr').textContent='Supabase не подключён (см. настройки в коде)'; return; }
+  $('lBtn').disabled=true;
+  const {error} = await sb.auth.signInWithPassword({email:phoneToEmail($('lPhone').value), password:$('lPass').value});
+  $('lBtn').disabled=false;
+  if(error){ $('lErr').textContent='Неверный логин или пароль'; return; }
+  openDash();
+};
+$('lPass').onkeydown = e=>{ if(e.key==='Enter') $('lBtn').click(); };
+$('outBtn').onclick = async ()=>{ await sb.auth.signOut(); loaded=false; $('dash').style.display='none'; $('loginBox').style.display='block'; };
+
+document.querySelectorAll('.atabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.atabs button').forEach(x=>x.classList.toggle('on',x===b));
+  $('t-products').style.display = b.dataset.t==='products'?'block':'none';
+  $('t-services').style.display = b.dataset.t==='services'?'block':'none';
+});
+
+async function openDash(){
+  $('loginBox').style.display='none'; $('dash').style.display='block';
+  loaded=false;
+  await Promise.all([loadProducts(true),loadServices()]);
+  renderPT(); renderST();
+}
+
+/* -- товары -- */
+let pEdit=null, pPhotoUrl='';
+function renderPT(){
+  const q=$('paq').value.trim().toLowerCase();
+  const list=products.filter(p=>(p.brand+' '+p.name).toLowerCase().includes(q));
+  $('ptb').innerHTML = list.map(p=>`
+    <tr class="${p.visible?'':'off'}">
+      <td>${p.photo?`<img src="${esc(p.photo)}">`:'<span class="noimg"></span>'}</td>
+      <td><b>${esc(p.name)}</b><br><small style="color:var(--muted)">${esc(p.note)}</small></td>
+      <td class="hm">${esc(p.brand)}</td>
+      <td>${fmt(p.price)}${p.old_price?`<br><s style="color:var(--muted)">${fmt(p.old_price)}</s>`:''}</td>
+      <td><div class="acts">
+        <button class="btn btn-g btn-s" data-v="${p.id}">${p.visible?'Скрыть':'Показать'}</button>
+        <button class="btn btn-g btn-s" data-e="${p.id}">Изм.</button>
+        <button class="btn btn-d btn-s" data-d="${p.id}">✕</button></div></td>
+    </tr>`).join('') || '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:30px">Пусто — добавьте первый товар</td></tr>';
+  $('ptb').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>pStart(+b.dataset.e));
+  $('ptb').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>rowDel('products',+b.dataset.d,products,'name',afterP));
+  $('ptb').querySelectorAll('[data-v]').forEach(b=>b.onclick=async()=>{const p=products.find(x=>x.id===+b.dataset.v);await sb.from('products').update({visible:!p.visible}).eq('id',p.id);afterP();});
+}
+$('paq').oninput = renderPT;
+async function afterP(){ await loadProducts(true); renderPT(); }
+function pReset(){
+  pEdit=null; pPhotoUrl=''; ['pName','pPrice','pOld','pNote','pPhoto'].forEach(k=>$(k).value=''); $('pVis').checked=true;
+  $('pPrev').style.display='none'; $('pfTitle').textContent='Добавить товар'; $('pSave').textContent='Добавить'; $('pCancel').style.display='none';
+}
+function pStart(id){
+  const p=products.find(x=>x.id===id); pEdit=id; pPhotoUrl=p.photo||'';
+  $('pBrand').value=p.brand; $('pName').value=p.name; $('pPrice').value=p.price; $('pOld').value=p.old_price||''; $('pNote').value=p.note||''; $('pVis').checked=p.visible; $('pPhoto').value='';
+  if(p.photo){$('pPrev').src=p.photo;$('pPrev').style.display='block';} else $('pPrev').style.display='none';
+  $('pfTitle').textContent='Редактирование'; $('pSave').textContent='Сохранить'; $('pCancel').style.display='inline-flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('pCancel').onclick=pReset;
+$('pPhoto').onchange=()=>{ const f=$('pPhoto').files[0]; if(f){ $('pPrev').src=URL.createObjectURL(f); $('pPrev').style.display='block'; } };
+$('pSave').onclick = async ()=>{
+  const row={brand:$('pBrand').value,name:$('pName').value.trim(),price:+$('pPrice').value,old_price:$('pOld').value?+$('pOld').value:null,note:$('pNote').value.trim(),visible:$('pVis').checked};
+  if(!row.name||!row.price){toast('Заполните название и цену');return;}
+  $('pSave').disabled=true;
+  const f=$('pPhoto').files[0];
+  if(f){
+    const path=Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+(f.name.split('.').pop()||'jpg');
+    const up=await sb.storage.from('photos').upload(path,f,{contentType:f.type});
+    if(up.error){toast('Фото не загрузилось: '+up.error.message);$('pSave').disabled=false;return;}
+    pPhotoUrl=sb.storage.from('photos').getPublicUrl(path).data.publicUrl;
+  }
+  row.photo=pPhotoUrl;
+  const {error}= pEdit ? await sb.from('products').update(row).eq('id',pEdit) : await sb.from('products').insert(row);
+  $('pSave').disabled=false;
+  if(error){toast('Ошибка: '+error.message);return;}
+  toast(pEdit?'Сохранено':'Добавлено'); pReset(); afterP();
+};
+
+/* -- услуги -- */
+let sEdit=null;
+function renderST(){
+  $('stb').innerHTML = services.map(s=>`
+    <tr><td><b>${esc(s.name)}</b>${s.with_part?'<span class="tag-part">+ дисплей</span>':''}</td><td>${sPrice(s)}</td><td class="hm" style="color:var(--muted)">${esc(s.note)}</td>
+      <td><div class="acts"><button class="btn btn-g btn-s" data-e="${s.id}">Изм.</button><button class="btn btn-d btn-s" data-d="${s.id}">✕</button></div></td></tr>`).join('')
+    || '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:30px">Пусто — добавьте первую услугу</td></tr>';
+  $('stb').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>sStart(+b.dataset.e));
+  $('stb').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>rowDel('services',+b.dataset.d,services,'name',afterS));
+}
+async function afterS(){ await loadServices(); renderST(); }
+function sReset(){ sEdit=null; ['sName','sPrice','sSort','sNote'].forEach(k=>$(k).value=''); $('sFrom').checked=true; $('sPart').checked=false; $('sfTitle').textContent='Добавить услугу'; $('sSave').textContent='Добавить'; $('sCancel').style.display='none'; }
+function sStart(id){
+  const s=services.find(x=>x.id===id); sEdit=id;
+  $('sName').value=s.name; $('sPrice').value=s.price; $('sSort').value=s.sort; $('sNote').value=s.note||''; $('sFrom').checked=s.from_price; $('sPart').checked=!!s.with_part;
+  $('sfTitle').textContent='Редактирование'; $('sSave').textContent='Сохранить'; $('sCancel').style.display='inline-flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('sCancel').onclick=sReset;
+$('sSave').onclick = async ()=>{
+  const row={name:$('sName').value.trim(),price:+$('sPrice').value||0,sort:+$('sSort').value||0,note:$('sNote').value.trim(),from_price:$('sFrom').checked,with_part:$('sPart').checked};
+  if(!row.name){toast('Введите название услуги');return;}
+  const {error}= sEdit ? await sb.from('services').update(row).eq('id',sEdit) : await sb.from('services').insert(row);
+  if(error){toast('Ошибка: '+error.message);return;}
+  toast(sEdit?'Сохранено':'Добавлено'); sReset(); afterS();
+};
+
+async function rowDel(table,id,arr,key,after){
+  const r=arr.find(x=>x.id===id);
+  if(!confirm('Удалить «'+r[key]+'»?')) return;
+  const {error}=await sb.from(table).delete().eq('id',id);
+  if(error){toast('Ошибка');return;}
+  toast('Удалено'); after();
+}
+</script>
+</body>
+</html>
